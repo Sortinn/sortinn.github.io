@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>Ordering in Guava | Gran Turismo</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Guava,">
+  
+
+  <meta name="description" content="Guava基于Comparator比较器实现的排序器Ordering从实现上说，Ordering 实例就是一个特殊的 Comparator 实例。Ordering 把很多基于 Comparator 的静态方法（如 Collections.max ）包装为自己的实例方法（非静态方法），并且提供了链式调用方法，来定制和增强现有的比较器。 创建排序器：常见的排序器可以由下面的静态方法创建   方法 描述">
+<meta name="keywords" content="Guava">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ordering in Guava">
+<meta property="og:url" content="http://yoursite.com/2019/01/19/Guava的Ordering/index.html">
+<meta property="og:site_name" content="Gran Turismo">
+<meta property="og:description" content="Guava基于Comparator比较器实现的排序器Ordering从实现上说，Ordering 实例就是一个特殊的 Comparator 实例。Ordering 把很多基于 Comparator 的静态方法（如 Collections.max ）包装为自己的实例方法（非静态方法），并且提供了链式调用方法，来定制和增强现有的比较器。 创建排序器：常见的排序器可以由下面的静态方法创建   方法 描述">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-01-19T13:00:27.966Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ordering in Guava">
+<meta name="twitter:description" content="Guava基于Comparator比较器实现的排序器Ordering从实现上说，Ordering 实例就是一个特殊的 Comparator 实例。Ordering 把很多基于 Comparator 的静态方法（如 Collections.max ）包装为自己的实例方法（非静态方法），并且提供了链式调用方法，来定制和增强现有的比较器。 创建排序器：常见的排序器可以由下面的静态方法创建   方法 描述">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-38189205-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?57e94d016e201fba3603a8a2b0263af0";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+</head>
+</html>
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/archives/" rel="noopener noreferrer" target="_self">
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/category/" rel="noopener noreferrer" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/tag/" rel="noopener noreferrer" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/link/" rel="noopener noreferrer" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/about/" rel="noopener noreferrer" target="_self">
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/search/" rel="noopener noreferrer" target="_self">
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Guava基于Comparator比较器实现的排序器Ordering"><span class="toc-text">Guava基于Comparator比较器实现的排序器Ordering</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#创建排序器：常见的排序器可以由下面的静态方法创建"><span class="toc-text">创建排序器：常见的排序器可以由下面的静态方法创建</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#链式调用方法-：通过链式调用，可以由给定的排序器衍生出其它排序器"><span class="toc-text">链式调用方法**：通过链式调用，可以由给定的排序器衍生出其它排序器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#运用排序器：Guava的排序器实现有若干操纵集合或元素值的方法"><span class="toc-text">运用排序器：Guava的排序器实现有若干操纵集合或元素值的方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参考："><span class="toc-text">参考：</span></a></li></ol></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-Guava的Ordering" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">Ordering in Guava</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2019.01.19</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Sortinn</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/CSLearning/">CSLearning</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h2 id="Guava基于Comparator比较器实现的排序器Ordering"><a href="#Guava基于Comparator比较器实现的排序器Ordering" class="headerlink" title="Guava基于Comparator比较器实现的排序器Ordering"></a>Guava基于Comparator比较器实现的排序器Ordering</h2><p>从实现上说，<code>Ordering</code> 实例就是一个特殊的 <code>Comparator</code> 实例。<code>Ordering</code> 把很多基于 <code>Comparator</code> 的静态方法（如 <code>Collections.max</code> ）包装为自己的实例方法（非静态方法），并且提供了链式调用方法，来定制和增强现有的比较器。</p>
+<h3 id="创建排序器：常见的排序器可以由下面的静态方法创建"><a href="#创建排序器：常见的排序器可以由下面的静态方法创建" class="headerlink" title="创建排序器：常见的排序器可以由下面的静态方法创建"></a><strong>创建排序器</strong>：常见的排序器可以由下面的静态方法创建</h3><table>
+<thead>
+<tr>
+<th style="text-align:center">方法</th>
+<th style="text-align:center">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><a href="http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/com/google/common/collect/Ordering.html#natural(" target="_blank" rel="noopener"><code>natural()</code></a>)</td>
+<td style="text-align:center">对可排序类型做自然排序，如数字按大小，日期按先后排序</td>
+</tr>
+<tr>
+<td style="text-align:center"><a href="http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/com/google/common/collect/Ordering.html#usingToString(" target="_blank" rel="noopener"><code>usingToString()</code></a>)</td>
+<td style="text-align:center">按对象的字符串形式做字典排序[lexicographical ordering]</td>
+</tr>
+<tr>
+<td style="text-align:center"><a href="http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/com/google/common/collect/Ordering.html#from(java.util.Comparator" target="_blank" rel="noopener"><code>from(Comparator)</code></a>)</td>
+<td style="text-align:center">把给定的Comparator转化为排序器</td>
+</tr>
+</tbody>
+</table>
+<p>实现自定义的排序器时，除了用上面的 <code>from</code> 方法，也可以跳过实现 <code>Comparator</code> ，而直接继承 <code>Ordering</code> ：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"> Ordering&lt;String&gt; ordering = <span class="keyword">new</span> Ordering&lt;String&gt;() &#123;</span><br><span class="line">     <span class="meta">@Override</span></span><br><span class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compare</span><span class="params">(String left, String right)</span> </span>&#123;</span><br><span class="line">         <span class="keyword">return</span> (left.length() - right.length());</span><br><span class="line">     &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<h3 id="链式调用方法-：通过链式调用，可以由给定的排序器衍生出其它排序器"><a href="#链式调用方法-：通过链式调用，可以由给定的排序器衍生出其它排序器" class="headerlink" title="链式调用方法**：通过链式调用，可以由给定的排序器衍生出其它排序器"></a>链式调用方法**：通过链式调用，可以由给定的排序器衍生出其它排序器</h3><table>
+<thead>
+<tr>
+<th style="text-align:center"><strong>方法</strong></th>
+<th style="text-align:center"><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><a href="http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/com/google/common/collect/Ordering.html#reverse(" target="_blank" rel="noopener"><code>reverse()</code></a>)</td>
+<td style="text-align:center">获取语义相反的排序器</td>
+</tr>
+<tr>
+<td style="text-align:center"><a href="http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/com/google/common/collect/Ordering.html#nullsFirst(" target="_blank" rel="noopener"><code>nullsFirst()</code></a>)</td>
+<td style="text-align:center">使用当前排序器，但额外把null值排到最前面。</td>
+</tr>
+<tr>
+<td style="text-align:center"><a href="http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/com/google/common/collect/Ordering.html#nullsLast(" target="_blank" rel="noopener"><code>nullsLast()</code></a>)</td>
+<td style="text-align:center">使用当前排序器，但额外把null值排到最后面。</td>
+</tr>
+<tr>
+<td style="text-align:center"><a href="http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/com/google/common/collect/Ordering.html#compound(java.util.Comparator" target="_blank" rel="noopener"><code>compound(Comparator)</code></a>)</td>
+<td style="text-align:center">合成另一个比较器，以处理当前排序器中的相等情况。</td>
+</tr>
+<tr>
+<td style="text-align:center"><a href="http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/com/google/common/collect/Ordering.html#lexicographical(" target="_blank" rel="noopener"><code>lexicographical()</code></a>)</td>
+<td style="text-align:center">基于处理类型T的排序器，返回该类型的可迭代对象Iterable<t>的排序器。</t></td>
+</tr>
+<tr>
+<td style="text-align:center"><a href="http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/com/google/common/collect/Ordering.html#onResultOf(com.google.common.base.Function" target="_blank" rel="noopener"><code>onResultOf(Function)</code></a>)</td>
+<td style="text-align:center">对集合中元素调用Function，再按返回值用当前排序器排序。</td>
+</tr>
+</tbody>
+</table>
+<p>例如，你需要下面这个类的排序器。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Nullable</span> String sortedBy;</span><br><span class="line">    <span class="keyword">int</span> notSortedBy;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>考虑到排序器应该能处理sortedBy为null的情况，我们可以使用下面的链式调用来合成排序器：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Ordering&lt;Foo&gt; ordering = Ordering.natural().nullsFirst().onResultOf(<span class="keyword">new</span> Function&lt;Foo, String&gt;() &#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> String <span class="title">apply</span><span class="params">(Foo foo)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> foo.sortedBy;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>当阅读链式调用产生的排序器时，应该从后往前读。上面的例子中，排序器首先调用apply方法获取sortedBy值，并把sortedBy为null的元素都放到最前面，然后把剩下的元素按sortedBy进行自然排序。之所以要从后往前读，是因为每次链式调用都是用后面的方法包装了前面的排序器。</p>
+<p><em>注：用compound方法包装排序器时，就不应遵循从后往前读的原则。为了避免理解上的混乱，请不要把compound写在一长串链式调用的中间，你可以另起一行，在链中最先或最后调用compound。</em></p>
+<p>超过一定长度的链式调用，也可能会带来阅读和理解上的难度。我们建议按下面的代码这样，在一个链中最多使用三个方法。此外，你也可以把Function分离成中间对象，让链式调用更简洁紧凑。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Ordering&lt;Foo&gt; ordering = Ordering.natural().nullsFirst().onResultOf(sortKeyFunction);</span><br></pre></td></tr></table></figure>
+<h3 id="运用排序器：Guava的排序器实现有若干操纵集合或元素值的方法"><a href="#运用排序器：Guava的排序器实现有若干操纵集合或元素值的方法" class="headerlink" title="运用排序器：Guava的排序器实现有若干操纵集合或元素值的方法"></a>运用排序器：Guava的排序器实现有若干操纵集合或元素值的方法</h3><table>
+<thead>
+<tr>
+<th style="text-align:center"><strong>方法</strong></th>
+<th style="text-align:center"><strong>描述</strong></th>
+<th style="text-align:center"><strong>另请参见</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><a href="http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/com/google/common/collect/Ordering.html#greatestOf(java.lang.Iterable,%20int" target="_blank" rel="noopener"><code>greatestOf(Iterable iterable, int k)</code></a>)</td>
+<td style="text-align:center">获取可迭代对象中最大的k个元素。</td>
+<td style="text-align:center"><a href="http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/com/google/common/collect/Ordering.html#leastOf(java.lang.Iterable,%20int" target="_blank" rel="noopener"><code>leastOf</code></a>)</td>
+</tr>
+<tr>
+<td style="text-align:center"><a href="http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/com/google/common/collect/Ordering.html#isOrdered(java.lang.Iterable" target="_blank" rel="noopener"><code>isOrdered(Iterable)</code></a>)</td>
+<td style="text-align:center">判断可迭代对象是否已按排序器排序：允许有排序值相等的元素。</td>
+<td style="text-align:center"><a href="http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/com/google/common/collect/Ordering.html#isStrictlyOrdered(java.lang.Iterable" target="_blank" rel="noopener"><code>isStrictlyOrdered</code></a>)</td>
+</tr>
+<tr>
+<td style="text-align:center"><a href="http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/com/google/common/collect/Ordering.html#sortedCopy(java.lang.Iterable" target="_blank" rel="noopener"><code>sortedCopy(Iterable)</code></a>)</td>
+<td style="text-align:center">判断可迭代对象是否已严格按排序器排序：不允许排序值相等的元素。</td>
+<td style="text-align:center"><a href="http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/com/google/common/collect/Ordering.html#immutableSortedCopy(java.lang.Iterable" target="_blank" rel="noopener"><code>immutableSortedCopy</code></a>)</td>
+</tr>
+<tr>
+<td style="text-align:center"><a href="http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/com/google/common/collect/Ordering.html#min(E,%20E" target="_blank" rel="noopener"><code>min(E, E)</code></a>)</td>
+<td style="text-align:center">返回两个参数中最小的那个。如果相等，则返回第一个参数。</td>
+<td style="text-align:center"><a href="http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/com/google/common/collect/Ordering.html#max(E,%20E" target="_blank" rel="noopener"><code>max(E, E)</code></a>)</td>
+</tr>
+<tr>
+<td style="text-align:center"><a href="http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/com/google/common/collect/Ordering.html#min(E,%20E,%20E,%20E..." target="_blank" rel="noopener"><code>min(E, E, E, E...)</code></a>)</td>
+<td style="text-align:center">返回多个参数中最小的那个。如果有超过一个参数都最小，则返回第一个最小的参数。</td>
+<td style="text-align:center"><a href="http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/com/google/common/collect/Ordering.html#max(E,%20E,%20E,%20E..." target="_blank" rel="noopener"><code>max(E, E, E, E...)</code></a>)</td>
+</tr>
+<tr>
+<td style="text-align:center"><a href="http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/com/google/common/collect/Ordering.html#min(java.lang.Iterable" target="_blank" rel="noopener"><code>min(Iterable)</code></a>)</td>
+<td style="text-align:center">返回迭代器中最小的元素。如果可迭代对象中没有元素，则抛出NoSuchElementException。</td>
+<td style="text-align:center"><a href="http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/com/google/common/collect/Ordering.html#max(java.lang.Iterable" target="_blank" rel="noopener"><code>max(Iterable)</code></a>), <a href="http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/com/google/common/collect/Ordering.html#min(java.util.Iterator" target="_blank" rel="noopener"><code>min(Iterator)</code></a>), <a href="http://docs.guava-libraries.googlecode.com/git-history/release/javadoc/com/google/common/collect/Ordering.html#max(java.util.Iterator" target="_blank" rel="noopener"><code>max(Iterator)</code></a>)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h3><p><strong>原创文章，转载请注明：</strong> 转载自<a href="http://ifeve.com/" target="_blank" rel="noopener">并发编程网 – ifeve.com</a><strong>本文链接地址:</strong> [[Google Guava] 排序: Guava强大的”流畅风格比较器”](</p>
+
+    
+  </div>
+
+</article>
+
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持Sortinn</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2019/01/19/每日工作/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2019/01/19/PriorityQueue优先队列/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/archives/" rel="noopener noreferrer" target="_self">
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/category/" rel="noopener noreferrer" target="_self">
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/tag/" rel="noopener noreferrer" target="_self">
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/link/" rel="noopener noreferrer" target="_self">
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/about/" rel="noopener noreferrer" target="_self">
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/search/" rel="noopener noreferrer" target="_self">
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '277317290454635afa73',
+  clientSecret: '78223c859304da5e8d71bfce136d436c6ff95c37',
+  repo: 'blog-comment',
+  owner: 'forsigner',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: location.pathname,
+  admin: ['forsigner'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>

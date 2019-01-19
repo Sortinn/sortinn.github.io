@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>MySQL基本概念和操作 | Gran Turismo</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="DataBase,">
+  
+
+  <meta name="description" content="MySQL基本概念和操作 MySQL提示符     提示符 意义     \D 完整的日期   \d 服务器名称   \u 当前用户       如：   1mysql &amp;gt; PROMPT \u@\h \d &amp;gt;   可以将提示符改为：   1root@localhost mysql &amp;gt;">
+<meta name="keywords" content="DataBase">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL基本概念和操作">
+<meta property="og:url" content="http://yoursite.com/2018/09/09/MySQL基本概念和操作/index.html">
+<meta property="og:site_name" content="Gran Turismo">
+<meta property="og:description" content="MySQL基本概念和操作 MySQL提示符     提示符 意义     \D 完整的日期   \d 服务器名称   \u 当前用户       如：   1mysql &amp;gt; PROMPT \u@\h \d &amp;gt;   可以将提示符改为：   1root@localhost mysql &amp;gt;">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/images/charset.png">
+<meta property="og:image" content="http://yoursite.com/images/foreign-key-require.png">
+<meta property="og:image" content="http://yoursite.com/images/foreign-key-operation.png">
+<meta property="og:updated_time" content="2019-01-19T12:46:43.088Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MySQL基本概念和操作">
+<meta name="twitter:description" content="MySQL基本概念和操作 MySQL提示符     提示符 意义     \D 完整的日期   \d 服务器名称   \u 当前用户       如：   1mysql &amp;gt; PROMPT \u@\h \d &amp;gt;   可以将提示符改为：   1root@localhost mysql &amp;gt;">
+<meta name="twitter:image" content="http://yoursite.com/images/charset.png">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-38189205-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?57e94d016e201fba3603a8a2b0263af0";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+</head>
+</html>
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/archives/" rel="noopener noreferrer" target="_self">
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/category/" rel="noopener noreferrer" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/tag/" rel="noopener noreferrer" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/link/" rel="noopener noreferrer" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/about/" rel="noopener noreferrer" target="_self">
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/search/" rel="noopener noreferrer" target="_self">
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#MySQL基本概念和操作"><span class="toc-text">MySQL基本概念和操作</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#数据类型"><span class="toc-text">数据类型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#约束"><span class="toc-text">约束</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-MySQL基本概念和操作" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">MySQL基本概念和操作</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2018.09.09</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Sortinn</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/CS-Learning/">CS Learning</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h1 id="MySQL基本概念和操作"><a href="#MySQL基本概念和操作" class="headerlink" title="MySQL基本概念和操作"></a>MySQL基本概念和操作</h1><ol>
+<li>MySQL提示符</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">提示符</th>
+<th style="text-align:center">意义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">\D</td>
+<td style="text-align:center">完整的日期</td>
+</tr>
+<tr>
+<td style="text-align:center">\d</td>
+<td style="text-align:center">服务器名称</td>
+</tr>
+<tr>
+<td style="text-align:center">\u</td>
+<td style="text-align:center">当前用户</td>
+</tr>
+</tbody>
+</table>
+<p>   如：</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql &gt; PROMPT \u@\h \d &gt;</span><br></pre></td></tr></table></figure>
+<p>  可以将提示符改为：</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@localhost mysql &gt;</span><br></pre></td></tr></table></figure>
+  <a id="more"></a>
+<p><strong>2. MySQL常用命令</strong></p>
+<ul>
+<li>显示当前服务器版本</li>
+</ul>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT VERSION();</span><br></pre></td></tr></table></figure>
+<ul>
+<li>显示当前时间日期</li>
+</ul>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT NOW();</span><br></pre></td></tr></table></figure>
+<ul>
+<li>显示当前用户</li>
+</ul>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT USER();</span><br></pre></td></tr></table></figure>
+<p><strong>3. MySQL语句规范</strong></p>
+<ul>
+<li>关键字与函数名称全部大写</li>
+<li>数据库名称、表名称、字段名称全部小写</li>
+<li>SQL语句必须以分号结尾</li>
+</ul>
+<p><strong>4. 数据库相关操作</strong></p>
+<ul>
+<li>创建数据库</li>
+</ul>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CREATE &#123;DATABASE | SCHEMA&#125; [IF NOT EXISTS] db_name [DEFAULT] CHARACTER SET [=] charset_name</span><br></pre></td></tr></table></figure>
+<ul>
+<li>查看当前服务器下数据表列表</li>
+</ul>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SHOW &#123;DATABASES | SCHEMAS&#125; [LIKE &apos;pattern&apos; | WHERE expr]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>打开数据库</li>
+</ul>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">USE db_name</span><br></pre></td></tr></table></figure>
+<ul>
+<li>查看当前数据库</li>
+</ul>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT DATABASE();</span><br></pre></td></tr></table></figure>
+<ul>
+<li>查看警告信息</li>
+</ul>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SHOW WARNINGS;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>查看创建数据库时的信息</li>
+</ul>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SHOW CREATE DATABASE db_name</span><br></pre></td></tr></table></figure>
+<ul>
+<li>修改数据库</li>
+</ul>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER &#123;DATABASE | SCHEMA&#125; [db_name] [DEFAULT] CHARACTER SET [=] charset_name</span><br></pre></td></tr></table></figure>
+<ul>
+<li>删除数据库</li>
+</ul>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DROP &#123;DATABASE | SCHEMA&#125; [IF EXISTS] db_name</span><br></pre></td></tr></table></figure>
+<p><strong>5. 数据表操作</strong></p>
+<ul>
+<li>创建数据表</li>
+</ul>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE [IF NOT EXISTS] table_name (</span><br><span class="line">  ...</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">--  创建表的同时插入数据</span><br><span class="line">  CREATE TABLE [IF NOT EXISTS] tbl_name(</span><br><span class="line">  ...</span><br><span class="line">  )</span><br><span class="line">  SELECT ...</span><br></pre></td></tr></table></figure>
+<ul>
+<li>查看数据表列表</li>
+</ul>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SHOW TABLES [FROM db_name] [LIKE &apos;pattern&apos; | WHERE expr]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>查看数据表结构</li>
+</ul>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SHOW COLUMNS FROM tbl_name</span><br></pre></td></tr></table></figure>
+<ul>
+<li>查看数据表索引</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SHOW INDEXES FROM tbl_name;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>插入记录</li>
+</ul>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">case1: INSERT [INTO] tbl_name [(col_name, ...)] VALUES(val, ...)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>如果省略列名或字段名，那么必须为所有列或字段赋值。</p>
+<p>如果要为默认的字段（如标记为 <code>Auto_Increment</code> 的字段）赋值，赋 <code>Null</code> 或 <code>Default</code> 即可。</p>
+<p>可一次插入多条记录。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">case2: INSERT [INTO] tbl_name SET col_name = &#123;expr | DEFAULT&#125;, ...</span><br></pre></td></tr></table></figure>
+<pre><code>&gt;与第一种方法相比，这种插入数据的方法可以使用**子查询**(SubQuery)。
+&gt;
+&gt;一次只能插入一条记录。
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">case3: INSERT [INTO] tbl_name [(col_name,...)] SELECT ...</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这个方法可以将查询结果插入指定数据表中。</p>
+</blockquote>
+<ul>
+<li>更新记录</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-- 单表更新</span><br><span class="line">  UPDATE [LOW_PRIORITY][IGNORE] tbl_reference SET col_name1=&#123;expr | DEFAULT&#125;[,col_name2=&#123;expr | DEFAULT&#125;]... [WHERE where_condition]</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-- 多表更新</span><br><span class="line">  UPDATE tbl_references SET col_name1 = &#123;expr1 | DEFAULT&#125;[,col_name2 = &#123;expr2 | DEFAULT&#125;]...[WHERE where_condition]</span><br><span class="line">  </span><br><span class="line">-- tbl_reference 表的参照关系之连接</span><br><span class="line">tbl_name1 &#123;[INNER | CROSS] JOIN | &#123;LEFT | RIGHT&#125; [OUTER] JOIN&#125; tbl_name2 ON condition_expr</span><br></pre></td></tr></table></figure>
+<ul>
+<li>删除记录</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-- 单表删除</span><br><span class="line">  DELETE FROM tbl_name [WHERE where_condition]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>记录查询</li>
+</ul>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT expr, ... FROM tbl_name</span><br></pre></td></tr></table></figure>
+<ol>
+<li><code>GROUP BY</code> 对查询结果分组</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[GROUP BY &#123;col_name | position&#125; [ASC | DESC],...]</span><br></pre></td></tr></table></figure>
+<p>  <code>HAVING</code> 指定分组条件</p>
+<ol start="2">
+<li><code>ORDER BY</code> 对查询结果排序</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[ORDER BY &#123;col_name | expr | position&#125; [ASC | DESC],...]</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li><code>LIMIT</code> 限制查询结果返回的数量</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[LIMIT &#123;[offset,] row_count | row_count OFFSET offset&#125;]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>子查询：出现在其他 <code>SQL</code> 语句中的 <code>SELECT</code> 子句。子查询必须括在小括号内。</li>
+</ul>
+<ol>
+<li>使用比较运算符的子查询。<strong>用 <code>ANY</code>、<code>SOME</code>、<code>ALL</code> 来修饰比较运算符</strong>；</li>
+<li>使用 <code>[NOT] IN</code> 的子查询；</li>
+<li>使用 <code>[NOT] EXIST</code> 的子查询</li>
+</ol>
+<ul>
+<li><p>修改数据表</p>
+<ul>
+<li>添加列</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE tbl_name ADD [COLUMNS] col_name column_definition [FIRST | AFTER col_name]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>删除列</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE tbl_name DROP [COLUMNS] col_name</span><br></pre></td></tr></table></figure>
+<ul>
+<li>添加主键约束</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE tbl_name ADD [CONSTRAINT [symbol]] PRIMARY KEY [index_type] (index_col_name,...)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>添加唯一约束</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE tbl_name ADD [CONSTRAINT [symbol]] UNIQUE [INDEX | KEY][index_name][index_type](index_col_name,...)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>添加外键约束</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE tbl_name ADD [CONSTRAINT [symbol]] FOREIGN KEY [index_name](index_col_name,...) reference_definition</span><br></pre></td></tr></table></figure>
+<ul>
+<li>添加/删除默认约束</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE tbl_name ALTER [COLUMN] col_name &#123;SET DEFAULT literal | DROP DEFAULT&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>删除主键约束</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE tbl_name DROP PRIMARY KEY</span><br></pre></td></tr></table></figure>
+<ul>
+<li>删除唯一约束</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE tbl_name DROP &#123;INDEX | KEY&#125; index_name</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>需要首先查看索引名，再删除唯一约束。</p>
+</blockquote>
+<ul>
+<li>删除外键约束</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE tbl_name DROP FOREIGN KEY fk_symbol</span><br></pre></td></tr></table></figure>
+<ul>
+<li>修改列定义</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE tbl_name MODIFY [COLUMNS] col_name column_definition [FIRST | AFTER col_name]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>修改列名称</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE tbl_name CHANGE [COLUMNS] old_col_name new_col_name column_definition [FIRST | AFTER col_name]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>修改表名称</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">case1: ALTER TABLE tbl_name RENAME [TO | AS] new_tbl_name</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">case2: RENAME TABLE tbl_name TO new_tbl_name [,tbl_name2 TO new_tbl_name2]...</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>连接</p>
+</li>
+</ul>
+<ol>
+<li><code>INNER JOIN</code> 内连接</li>
+</ol>
+<blockquote>
+<p><code>MySQL</code> 中，<code>JOIN</code>、<code>CROSS JOIN</code>、<code>INNER JOIN</code> 是等价的。 </p>
+</blockquote>
+<ol start="2">
+<li><code>LEFT [OUTER] JOIN</code> 左外连接</li>
+<li><code>RIGHT [OUTER] JOIN</code> 右外连接</li>
+</ol>
+<h1 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h1><ul>
+<li>整型</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">数据类型</th>
+<th style="text-align:center">占用字节</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">TINYINT</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">SMALLINT</td>
+<td style="text-align:center">2</td>
+</tr>
+<tr>
+<td style="text-align:center">MEDIUMINT</td>
+<td style="text-align:center">3</td>
+</tr>
+<tr>
+<td style="text-align:center">INT</td>
+<td style="text-align:center">4</td>
+</tr>
+<tr>
+<td style="text-align:center">BIGINT</td>
+<td style="text-align:center">8</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>浮点型</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">数据类型</th>
+<th style="text-align:center">存储范围</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">FLOAT[(M,D)]</td>
+<td style="text-align:center">-3.4E+38 ~ 3.4E+38</td>
+</tr>
+<tr>
+<td style="text-align:center">DOUBLE[(M,D)]</td>
+<td style="text-align:center">-1.8E+308 ~ 1.8E+308</td>
+</tr>
+<tr>
+<td style="text-align:center">说明</td>
+<td style="text-align:center">M是数字总位数，D为小数点后的位数</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>日期时间类型</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">列类型</th>
+<th style="text-align:center">存储需求</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">YEAR</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">TIME</td>
+<td style="text-align:center">3</td>
+</tr>
+<tr>
+<td style="text-align:center">DATE</td>
+<td style="text-align:center">3</td>
+</tr>
+<tr>
+<td style="text-align:center">DATETIME</td>
+<td style="text-align:center">8</td>
+</tr>
+<tr>
+<td style="text-align:center">TIMESTAMP</td>
+<td style="text-align:center">4</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>字符型</li>
+</ul>
+<p><img src="/images/charset.png" alt=""></p>
+<h1 id="约束"><a href="#约束" class="headerlink" title="约束"></a>约束</h1><ol>
+<li><p>约束保证了数据的完整性和一致性</p>
+</li>
+<li><p>约束按数据列的数目分为表级约束和列级约束</p>
+<blockquote>
+<p>列级约束：对一个数据列建立的约束。可在列定义时或列定义后声明。</p>
+<p>表级约束：对多个数据列建立的约束。只能在列定义后声明。</p>
+</blockquote>
+</li>
+<li><p>约束按功能划分包括：</p>
+<blockquote>
+<p><code>NOT NULL</code> (非空约束)<br><code>PRIMARY KEY</code> (主键约束)<br><code>UNIQUE KEY</code> (唯一约束)<br><code>DEFAULT</code> (默认约束)<br><code>FOREIGN KEY</code> (外键约束)</p>
+</blockquote>
+</li>
+</ol>
+<ul>
+<li><p>空值与非空</p>
+<blockquote>
+<p><code>NULL</code><br><code>NOT NULL</code><br><code>AUTO_INCREMENT</code></p>
+</blockquote>
+</li>
+</ul>
+<blockquote>
+<p><code>AUTO_INCREMENT</code>:</p>
+<blockquote>
+<pre><code>a.自动编号，且必须与主键组合使用;但是主键不一定要与`AUTO_INCREMENT`一起使用;
+
+&gt;     b.默认情况下，起始值为1，每次的增量为1
+</code></pre></blockquote>
+</blockquote>
+<ul>
+<li><p><code>PRIMARY KEY</code>（主键约束）</p>
+<blockquote>
+<p>每张数据表只能存在一个主键<br>主键保证记录的唯一性<br>主键自动为<code>NOT NULL</code><br>主键在创建时会自动创建索引</p>
+</blockquote>
+</li>
+<li><p><code>UNIQUE KEY</code>（唯一约束）</p>
+<blockquote>
+<p>唯一约束可以保证记录的唯一性<br>唯一约束的字段可以为空值(<code>NULL</code>)<br>每张数据表可以存在多个唯一约束</p>
+</blockquote>
+</li>
+<li><p><code>DEFAULT</code>（默认约束）</p>
+<blockquote>
+<p>默认值<br>当插入记录时，如果没有明确字段赋值，则自动赋默认值</p>
+</blockquote>
+</li>
+<li><p><code>FOREIGN KEY</code>(外键约束)</p>
+<blockquote>
+<p>保持数据的一致性、完整性；<br>实现一对一或一对多的关系。</p>
+</blockquote>
+</li>
+</ul>
+<p><img src="/images/foreign-key-require.png" alt=""></p>
+<p><img src="/images/foreign-key-operation.png" alt=""></p>
+<p>如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@localhost test&gt; CREATE TABLE province(</span><br><span class="line">    -&gt; id SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,</span><br><span class="line">    -&gt; pname VARCHAR(20) NOT NULL</span><br><span class="line">    -&gt; );</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">root@localhost test&gt; CREATE TABLE users(</span><br><span class="line">    -&gt; id SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,</span><br><span class="line">    -&gt; username VARCHAR(20) NOT NULL,</span><br><span class="line">    -&gt; pid SMALLINT UNSIGNED,</span><br><span class="line">    -&gt; FOREIGN KEY (pid) REFERENCES province(id) ON DELETE CASCADE</span><br><span class="line">    -&gt; );</span><br></pre></td></tr></table></figure>
+<p>子表 <code>users</code> 在外键约束中为删除指定了 <code>CASCADE</code> 操作，那么父表 <code>province</code> 在删除内容时会同步删除子表对应内容。</p>
+
+    
+  </div>
+
+</article>
+
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持Sortinn</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2018/09/06/Java反射/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2018/09/13/Maven入门/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/archives/" rel="noopener noreferrer" target="_self">
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/category/" rel="noopener noreferrer" target="_self">
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/tag/" rel="noopener noreferrer" target="_self">
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/link/" rel="noopener noreferrer" target="_self">
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/about/" rel="noopener noreferrer" target="_self">
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/search/" rel="noopener noreferrer" target="_self">
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '277317290454635afa73',
+  clientSecret: '78223c859304da5e8d71bfce136d436c6ff95c37',
+  repo: 'blog-comment',
+  owner: 'forsigner',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: location.pathname,
+  admin: ['forsigner'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>

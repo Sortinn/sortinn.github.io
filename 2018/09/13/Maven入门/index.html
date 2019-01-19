@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>Maven入门 | Gran Turismo</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="项目管理工具,">
+  
+
+  <meta name="description" content="Maven 的运行机制了解 Maven 的运行机制之前，先了解两个概念：  Maven 生命周期 Maven 插件  (一) Maven 生命周期 Maven 在 META-INF/plexus/components.xml 中定义了3个生命周期：  default Lifecycle clean Lifecycle site Lifecycle  (二) Maven 插件 插件是 Maven 的">
+<meta name="keywords" content="项目管理工具">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Maven入门">
+<meta property="og:url" content="http://yoursite.com/2018/09/13/Maven入门/index.html">
+<meta property="og:site_name" content="Gran Turismo">
+<meta property="og:description" content="Maven 的运行机制了解 Maven 的运行机制之前，先了解两个概念：  Maven 生命周期 Maven 插件  (一) Maven 生命周期 Maven 在 META-INF/plexus/components.xml 中定义了3个生命周期：  default Lifecycle clean Lifecycle site Lifecycle  (二) Maven 插件 插件是 Maven 的">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-01-19T12:59:58.296Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Maven入门">
+<meta name="twitter:description" content="Maven 的运行机制了解 Maven 的运行机制之前，先了解两个概念：  Maven 生命周期 Maven 插件  (一) Maven 生命周期 Maven 在 META-INF/plexus/components.xml 中定义了3个生命周期：  default Lifecycle clean Lifecycle site Lifecycle  (二) Maven 插件 插件是 Maven 的">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-38189205-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?57e94d016e201fba3603a8a2b0263af0";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+</head>
+</html>
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/archives/" rel="noopener noreferrer" target="_self">
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/category/" rel="noopener noreferrer" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/tag/" rel="noopener noreferrer" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/link/" rel="noopener noreferrer" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/about/" rel="noopener noreferrer" target="_self">
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/search/" rel="noopener noreferrer" target="_self">
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Maven-的运行机制"><span class="toc-text">Maven 的运行机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Maven-仓库"><span class="toc-text">Maven 仓库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Maven-的命令"><span class="toc-text">Maven 的命令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#（一）-使用插件命令"><span class="toc-text">（一） 使用插件命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#（二）使用生命周期阶段命令"><span class="toc-text">（二）使用生命周期阶段命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Maven仓库网址：https-mvnrepository-com"><span class="toc-text">Maven仓库网址：https://mvnrepository.com</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Maven官网：https-maven-apache-org"><span class="toc-text">Maven官网：https://maven.apache.org</span></a></li></ol></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-Maven入门" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">Maven入门</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2018.09.13</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Sortinn</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/CS-Learning/">CS Learning</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h2 id="Maven-的运行机制"><a href="#Maven-的运行机制" class="headerlink" title="Maven 的运行机制"></a>Maven 的运行机制</h2><p>了解 <code>Maven</code> 的运行机制之前，先了解两个概念：</p>
+<ul>
+<li><code>Maven</code> 生命周期</li>
+<li><code>Maven</code> 插件</li>
+</ul>
+<p>(一) <code>Maven</code> 生命周期</p>
+<p><code>Maven</code> 在 <code>META-INF/plexus/components.xml</code> 中定义了3个生命周期：</p>
+<ul>
+<li>default Lifecycle</li>
+<li>clean Lifecycle</li>
+<li>site Lifecycle</li>
+</ul>
+<p>(二) <code>Maven</code> 插件</p>
+<p>插件是 <code>Maven</code> 的核心，所有的功能都是由插件提供的。而每个插件都有多个<code>goal</code>，即目标，这些目标共同组成该插件的完整功能。比如：</p>
+<p><code>maven-clean-plugin</code> 插件有三个 <code>goal</code> ，分别为：<code>pre-clean</code>、<code>clean</code> 和 <code>post-clean</code></p>
+<a id="more"></a>
+<h2 id="Maven-仓库"><a href="#Maven-仓库" class="headerlink" title="Maven 仓库"></a>Maven 仓库</h2><p><code>Maven</code> 仓库分为<strong>本地仓库</strong>和<strong>远程仓库</strong>，远程仓库又分为中央仓库、私服和其他公共仓库。如下：</p>
+<ul>
+<li>本地仓库：当前用户目录下的.m2/repository文件夹</li>
+<li>远程仓库<ul>
+<li>中央仓库：<code>Maven</code> 默认仓库</li>
+<li>私服：如 <code>nexus</code></li>
+<li>其他公共仓库：如阿里云、开源中国等</li>
+</ul>
+</li>
+</ul>
+<p>那 <code>Maven</code> 如何从仓库下载 <code>jar</code> 包呢？一句话概括就是就近原则。<code>Maven</code>先从本地仓库寻找，如果没找到，就去远程仓库下载。</p>
+<p><code>Maven</code> 如何去找 <code>jar</code> 包呢？<code>Maven</code> 使用坐标的概念来唯一标识资源：</p>
+<ul>
+<li><code>groupId</code>：项目名称，一般格式为域名倒置+项目名；</li>
+<li><code>artifactId</code>：项目模块名称；</li>
+<li><code>version</code>：项目的版本号。</li>
+</ul>
+<p>如：向项目中添加依赖 <code>spring-context</code> :</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--pom.xml--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">properties</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">spring-verison</span>&gt;</span>5.0.7.RELEASE<span class="tag">&lt;/<span class="name">spring-verison</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">properties</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-context<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;spring-verison&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="Maven-的命令"><a href="#Maven-的命令" class="headerlink" title="Maven 的命令"></a>Maven 的命令</h2><ul>
+<li><code>Maven</code> 的第一个命令，我相信大部分同学都是这个：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mvn -v</span><br></pre></td></tr></table></figure>
+<p>如果正确配置了 <code>Maven</code> 的环境变量，那么不出所料会显示机器上安装的 <code>Maven</code> 的相关信息。</p>
+<ul>
+<li>使用 <code>Maven</code> 命令构建项目</li>
+</ul>
+<p>其实 <code>Maven</code> 的命令分为两种：<strong>插件命令</strong>和<strong>生命周期阶段命令</strong>。</p>
+<p>在终端下输入 <code>mvn</code> 回车，会显示一下错误信息：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">$ mvn</span><br><span class="line">[INFO] Scanning <span class="keyword">for</span> projects...</span><br><span class="line">[INFO] ------------------------------------------------------------------------</span><br><span class="line">[INFO] BUILD FAILURE</span><br><span class="line">[INFO] ------------------------------------------------------------------------</span><br><span class="line">[INFO] Total time: 0.122 s</span><br><span class="line">[INFO] Finished at: 2018-09-13T17:23:24+08:00</span><br><span class="line">[INFO] ------------------------------------------------------------------------</span><br><span class="line">[ERROR] No goals have been specified <span class="keyword">for</span> this build. You must specify a valid lifecycle phase or a goal <span class="keyword">in</span> the format &lt;plugin-prefix&gt;:&lt;goal&gt; or &lt;plugin-group-id&gt;:&lt;plugin-artifact-id&gt;[:&lt;plugin-version&gt;]:&lt;goal&gt;. Available lifecycle phases are: validate, initialize, generate-sources, process-sources, generate-resources, process-resources, compile, process-classes, generate-test-sources, process-test-sources, generate-test-resources, process-test-resources, <span class="built_in">test</span>-compile, process-test-classes, <span class="built_in">test</span>, prepare-package, package, pre-integration-test, integration-test, post-integration-test, verify, install, deploy, pre-clean, clean, post-clean, pre-site, site, post-site, site-deploy. -&gt; [Help 1]</span><br><span class="line">[ERROR]</span><br><span class="line">[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.</span><br><span class="line">[ERROR] Re-run Maven using the -X switch to <span class="built_in">enable</span> full debug logging.</span><br><span class="line">[ERROR]</span><br><span class="line">[ERROR] For more information about the errors and possible solutions, please <span class="built_in">read</span> the following articles:</span><br><span class="line">[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/NoGoalSpecifiedException</span><br></pre></td></tr></table></figure>
+<p>其中第一个 <code>[ERROR]</code> 显示的内容告诉我们必须按照给出的格式指定有效的生命周期阶段或目标。</p>
+<h3 id="（一）-使用插件命令"><a href="#（一）-使用插件命令" class="headerlink" title="（一） 使用插件命令"></a>（一） 使用插件命令</h3><p>现在我们想要使用 <code>maven-archetype-plugin</code> 插件来构建项目，我们先通过下面的命令来查询一下这个插件的描述：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mvn <span class="built_in">help</span>:describe -Dplugin=org.apache.maven.plugins:maven-archetype-plugin</span><br></pre></td></tr></table></figure>
+<p><code>Maven</code> 会先去本地仓库寻找这个插件，如果本地仓库没有，<code>Maven</code> 会先从远程仓库下载，然后打印出这个插件的 <code>Info</code> ：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">[INFO] org.apache.maven.plugins:maven-archetype-plugin:3.0.1</span><br><span class="line"></span><br><span class="line">Name: Maven Archetype Plugin</span><br><span class="line">Description: Maven Archetype is a <span class="built_in">set</span> of tools to deal with archetypes, i.e.</span><br><span class="line">  an abstract representation of a kind of project that can be instantiated into</span><br><span class="line">  a concrete customized Maven project. An archetype knows <span class="built_in">which</span> files will be</span><br><span class="line">  part of the instantiated project and <span class="built_in">which</span> properties to fill to properly</span><br><span class="line">  customize the project.</span><br><span class="line">Group Id: org.apache.maven.plugins</span><br><span class="line">Artifact Id: maven-archetype-plugin</span><br><span class="line">Version: 3.0.1</span><br><span class="line">Goal Prefix: archetype</span><br><span class="line"></span><br><span class="line">This plugin has 7 goals:</span><br><span class="line"></span><br><span class="line">archetype:crawl</span><br><span class="line">  Description: Crawl a Maven repository (filesystem, not HTTP) and creates a</span><br><span class="line">    catalog file.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">## 这里省略的是插件其中几个目标的详细描述</span></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">archetype:generate</span><br><span class="line">  Description: Generates a new project from an archetype, or updates the</span><br><span class="line">    actual project <span class="keyword">if</span> using a partial archetype. If the project is fully</span><br><span class="line">    generated, it is generated <span class="keyword">in</span> a directory corresponding to its artifactId.</span><br><span class="line">    If the project is updated with a partial archetype, it is <span class="keyword">done</span> <span class="keyword">in</span> the</span><br><span class="line">    current directory.</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"><span class="comment">## 这里省略的是插件其中几个目标的详细描述</span></span><br></pre></td></tr></table></figure>
+<p>可以看到，<code>Maven</code> 简化了插件名，如果要使用该插件，只需要指明其 <code>Goal Prefix</code> 即可，也就是这个插件的目标前缀，<code>Maven</code> 就可以识别出具体插件。</p>
+<p>如我们使用 <code>archetype</code> 提供的一个 <code>goal</code> : <code>archetype:generate</code> 来生成一个 <code>Maven</code> 项目：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mvn archetype:generate -DarchetypeCatalog=Internal</span><br></pre></td></tr></table></figure>
+<p>其中 <code>Internal</code> 参数是可选择的，代表Maven内置的 <code>archetype-catalog.xml</code> 文件；如果调用本地的    <code>archetype-catalog.xml</code> 文件，那么这个参数应改为 <code>local</code> ，前提是需要将 <code>archetype-catalog.xml</code> 存到本地的 <code>.m2</code> 文件夹内。而如果不加 <code>-DarchetypeCatalog</code> 参数，那么 <code>Maven</code> 将自动从远程仓库下载这个文件，这个过程是相对来说比较漫长的（除非修改远程仓库为私服或其他的公共仓库）。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">[INFO] Scanning <span class="keyword">for</span> projects...</span><br><span class="line">[INFO]</span><br><span class="line">[INFO] ------------------&lt; org.apache.maven:standalone-pom &gt;-------------------</span><br><span class="line">[INFO] Building Maven Stub Project (No POM) 1</span><br><span class="line">[INFO] --------------------------------[ pom ]---------------------------------</span><br><span class="line">[INFO]</span><br><span class="line">[INFO] &gt;&gt;&gt; maven-archetype-plugin:3.0.1:generate (default-cli) &gt; generate-sources @ standalone-pom &gt;&gt;&gt;</span><br><span class="line">[INFO]</span><br><span class="line">[INFO] &lt;&lt;&lt; maven-archetype-plugin:3.0.1:generate (default-cli) &lt; generate-sources @ standalone-pom &lt;&lt;&lt;</span><br><span class="line">[INFO]</span><br><span class="line">[INFO]</span><br><span class="line">[INFO] --- maven-archetype-plugin:3.0.1:generate (default-cli) @ standalone-pom ---</span><br><span class="line">[INFO] Generating project <span class="keyword">in</span> Interactive mode</span><br><span class="line">[INFO] No archetype defined. Using maven-archetype-quickstart (org.apache.maven.archetypes:maven-archetype-quickstart:1.0)</span><br><span class="line">Choose archetype:</span><br><span class="line">1: internal -&gt; org.apache.maven.archetypes:maven-archetype-archetype (An archetype <span class="built_in">which</span> contains a sample archetype.)</span><br><span class="line">2: internal -&gt; org.apache.maven.archetypes:maven-archetype-j2ee-simple (An archetype <span class="built_in">which</span> contains a simplifed sample J2EE application.)</span><br><span class="line">3: internal -&gt; org.apache.maven.archetypes:maven-archetype-plugin (An archetype <span class="built_in">which</span> contains a sample Maven plugin.)</span><br><span class="line">4: internal -&gt; org.apache.maven.archetypes:maven-archetype-plugin-site (An archetype <span class="built_in">which</span> contains a sample Maven plugin site.</span><br><span class="line">      This archetype can be layered upon an existing Maven plugin project.)</span><br><span class="line">5: internal -&gt; org.apache.maven.archetypes:maven-archetype-portlet (An archetype <span class="built_in">which</span> contains a sample JSR-268 Portlet.)</span><br><span class="line">6: internal -&gt; org.apache.maven.archetypes:maven-archetype-profiles ()</span><br><span class="line">7: internal -&gt; org.apache.maven.archetypes:maven-archetype-quickstart (An archetype <span class="built_in">which</span> contains a sample Maven project.)</span><br><span class="line">8: internal -&gt; org.apache.maven.archetypes:maven-archetype-site (An archetype <span class="built_in">which</span> contains a sample Maven site <span class="built_in">which</span> demonstrates</span><br><span class="line">      some of the supported document types like APT, XDoc, and FML and demonstrates how</span><br><span class="line">      to i18n your site. This archetype can be layered upon an existing Maven project.)</span><br><span class="line">9: internal -&gt; org.apache.maven.archetypes:maven-archetype-site-simple (An archetype <span class="built_in">which</span> contains a sample Maven site.)</span><br><span class="line">10: internal -&gt; org.apache.maven.archetypes:maven-archetype-webapp (An archetype <span class="built_in">which</span> contains a sample Maven Webapp project.)</span><br><span class="line">Choose a number or apply filter (format: [groupId:]artifactId, <span class="keyword">case</span> sensitive contains): 7:</span><br><span class="line"><span class="comment"># 等待输入</span></span><br></pre></td></tr></table></figure>
+<p>这里指明使用 <code>Internal</code> 属性来调取 <code>Maven</code> 内置的原型 (<code>archetype</code>) 目录，这里列出了 <code>10</code> 条，每一条对应一种 <code>Maven</code> 生成的项目类型。选择合适的项目类型，然后根据提示输入 <code>groupId</code> 和 <code>artifactId</code> 之后就可成功构建 <code>Maven</code> 项目。</p>
+<ul>
+<li>将项目导入IEDA</li>
+</ul>
+<p>如果是 <code>eclipse</code> 项目，可以使用 <code>Maven</code> 提供的插件 <code>eclipse</code> 中的 <code>goal</code> : <code>eclipse:clean</code> 来将项目中的<code>.project, .classpath, .wtpmodules</code> 文件和 <code>.settings</code> 文件夹删除。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mvn eclipse:clean</span><br></pre></td></tr></table></figure>
+<p>然后使用插件 <code>idea</code> 中的 <code>goal</code> : <code>idea:idea</code> 来根据 <code>POM</code> 构建 <code>IEDA</code> 文件(<code>.ipr, .iml, .iws</code> 文件)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mvn idea:idea</span><br></pre></td></tr></table></figure>
+<p>最后通过 <code>IDEA</code> 客户端导入该项目即可。</p>
+<ul>
+<li>使用 <code>compiler</code> 插件编译项目</li>
+</ul>
+<p>我们使用 <code>Maven</code> 提供的 <code>compiler</code> 插件来编译项目，首先，我们先看看这个插件的 <code>Info</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">$ mvn <span class="built_in">help</span>:describe -Dplugin=compiler</span><br><span class="line"></span><br><span class="line">[INFO] org.apache.maven.plugins:maven-compiler-plugin:3.1</span><br><span class="line"></span><br><span class="line">Name: Maven Compiler Plugin</span><br><span class="line">Description: The Compiler Plugin is used to compile the sources of your</span><br><span class="line">  project.</span><br><span class="line">Group Id: org.apache.maven.plugins</span><br><span class="line">Artifact Id: maven-compiler-plugin</span><br><span class="line">Version: 3.1</span><br><span class="line">Goal Prefix: compiler</span><br><span class="line"></span><br><span class="line">This plugin has 3 goals:</span><br><span class="line"></span><br><span class="line">compiler:compile</span><br><span class="line">  Description: Compiles application sources</span><br><span class="line"></span><br><span class="line">compiler:<span class="built_in">help</span></span><br><span class="line">  Description: Display <span class="built_in">help</span> information on maven-compiler-plugin.</span><br><span class="line">    Call mvn compiler:<span class="built_in">help</span> -Ddetail=<span class="literal">true</span> -Dgoal=&lt;goal-name&gt; to display</span><br><span class="line">    parameter details.</span><br><span class="line"></span><br><span class="line">compiler:testCompile</span><br><span class="line">  Description: Compiles application <span class="built_in">test</span> sources.</span><br><span class="line"></span><br><span class="line">For more information, run <span class="string">'mvn help:describe [...] -Ddetail'</span></span><br></pre></td></tr></table></figure>
+<p><code>compiler</code> 插件有三个 <code>goals</code>，我们使用 <code>compiler:compile</code> 来编译项目的源代码，使用 <code>compiler:testCompile</code> 来编译我们的项目中的测试文件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">$ mvn compiler:compile</span><br><span class="line"></span><br><span class="line">[INFO] Scanning <span class="keyword">for</span> projects...</span><br><span class="line">[INFO]</span><br><span class="line">[INFO] -----------------------&lt; com.sortinn:firstdemo &gt;------------------------</span><br><span class="line">[INFO] Building firstdemo 1.0-SNAPSHOT</span><br><span class="line">[INFO] --------------------------------[ jar ]---------------------------------</span><br><span class="line">[INFO]</span><br><span class="line">[INFO] --- maven-compiler-plugin:3.1:compile (default-cli) @ firstdemo ---</span><br><span class="line">[INFO] Changes detected - recompiling the module!</span><br><span class="line">[INFO] Compiling 2 <span class="built_in">source</span> files to /Users/sortinn/sortinn/Spring Project/demo-maven/target/classes</span><br><span class="line">[INFO] ------------------------------------------------------------------------</span><br><span class="line">[INFO] BUILD SUCCESS</span><br><span class="line">[INFO] ------------------------------------------------------------------------</span><br><span class="line">[INFO] Total time: 1.749 s</span><br><span class="line">[INFO] Finished at: 2018-09-13T23:05:55+08:00</span><br><span class="line">[INFO] ------------------------------------------------------------------------</span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用 <code>surefire</code> 插件跑测试</li>
+</ul>
+<p>同样，先查看 <code>surefire</code> 的 <code>Info</code> ：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">$ mvn <span class="built_in">help</span>:describe -Dplugin=surefire        </span><br><span class="line"></span><br><span class="line">[INFO] Scanning <span class="keyword">for</span> projects...</span><br><span class="line">[INFO]</span><br><span class="line">[INFO] -----------------------&lt; com.sortinn:firstdemo &gt;------------------------</span><br><span class="line">[INFO] Building demo-maven 1.0-SNAPSHOT</span><br><span class="line">[INFO] --------------------------------[ jar ]---------------------------------</span><br><span class="line">[INFO]</span><br><span class="line">[INFO] --- maven-help-plugin:3.1.0:describe (default-cli) @ firstdemo ---</span><br><span class="line">[INFO] org.apache.maven.plugins:maven-surefire-plugin:2.12.4</span><br><span class="line"></span><br><span class="line">Name: Maven Surefire Plugin</span><br><span class="line">Description: Surefire is a <span class="built_in">test</span> framework project.</span><br><span class="line">Group Id: org.apache.maven.plugins</span><br><span class="line">Artifact Id: maven-surefire-plugin</span><br><span class="line">Version: 2.12.4</span><br><span class="line">Goal Prefix: surefire</span><br><span class="line"></span><br><span class="line">This plugin has 2 goals:</span><br><span class="line"></span><br><span class="line">surefire:<span class="built_in">help</span></span><br><span class="line">  Description: Display <span class="built_in">help</span> information on maven-surefire-plugin.</span><br><span class="line">    Call mvn surefire:<span class="built_in">help</span> -Ddetail=<span class="literal">true</span> -Dgoal=&lt;goal-name&gt; to display</span><br><span class="line">    parameter details.</span><br><span class="line"></span><br><span class="line">surefire:<span class="built_in">test</span></span><br><span class="line">  Description: Run tests using Surefire.</span><br><span class="line"></span><br><span class="line">For more information, run <span class="string">'mvn help:describe [...] -Ddetail'</span></span><br></pre></td></tr></table></figure>
+<p>很明显，我们使用 <code>goal</code> : <code>surefire:test</code> 来跑测试：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ mvn surefire:<span class="built_in">test</span></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">-------------------------------------------------------</span><br><span class="line"> T E S T S</span><br><span class="line">-------------------------------------------------------</span><br><span class="line">Running com.sortinn.PayTest</span><br><span class="line">Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.066 sec</span><br><span class="line"></span><br><span class="line">Results :</span><br><span class="line"></span><br><span class="line">Tests run: 1, Failures: 0, Errors: 0, Skipped: 0</span><br></pre></td></tr></table></figure>
+<h3 id="（二）使用生命周期阶段命令"><a href="#（二）使用生命周期阶段命令" class="headerlink" title="（二）使用生命周期阶段命令"></a>（二）使用生命周期阶段命令</h3><ul>
+<li>编译项目</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mvn compile</span><br></pre></td></tr></table></figure>
+<ul>
+<li>跑测试</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mvn <span class="built_in">test</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>打包项目</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mvn package</span><br></pre></td></tr></table></figure>
+<p>看起来是不是很简洁傻瓜，这就是 Maven 强大特性的一个体现。</p>
+<p>在使用生命周期阶段命令时，<code>Maven</code> 会将当前执行的生命周期阶段之前的生命周期都顺序执行一遍。</p>
+<p>生命周期阶段命令是插件命令的有序集合。</p>
+<p>另外有几点需要注意：</p>
+<ul>
+<li>打包时包含第三方jar包</li>
+</ul>
+<p>如果没有做相关配置，这样直接打包生成的jar包是不包含第三方jar包的。如果需要将第三方jar包也打包进项目中，我们使用 <code>Maven</code> 提供的 <code>shade</code> 插件来完成。需要做如下配置：</p>
+<p>我们需要让 <code>shade</code> 插件在 <code>Maven</code> 打包的生命周期阶段发挥其作用，将第三方jar包一同打包，应在 <code>pom.xml</code> 文件中添加一下配置：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"> <span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-shade-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.1.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">          <span class="comment">&lt;!-- shade执行的生命周期阶段 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">executions</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">execution</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">phase</span>&gt;</span>package<span class="tag">&lt;/<span class="name">phase</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">goals</span>&gt;</span></span><br><span class="line">              <span class="tag">&lt;<span class="name">goal</span>&gt;</span>shade<span class="tag">&lt;/<span class="name">goal</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">goals</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">execution</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">executions</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>这里我们需要导入一个第三方jar包来支撑我们测试这个插件，我们找的是阿里巴巴的 <code>fastjson</code> 插件，将其添加进 <code>pom.xml</code> 文件中：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"> <span class="comment">&lt;!-- https://mvnrepository.com/artifact/com.alibaba/fastjson --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>fastjson<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.2.49<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>然后再执行 <code>mvn package</code> 命令即可将项目依赖的第三方 <code>jar</code> 包打包进我们的项目的 <code>jar</code> 包中去。最后 <code>Maven</code> 会生成两个 <code>jar</code> 包，一个是不包含第三方 <code>jar</code> 包，另一个则是包含的。</p>
+<ol>
+<li>生成可执行 <code>jar</code> 包</li>
+</ol>
+<p>在Maven官网有利用shade插件来实现生成可执行jar包的<a href="http://maven.apache.org/plugins/maven-shade-plugin/examples/resource-transformers.html#ManifestResourceTransformer" target="_blank" rel="noopener">例子</a>，我们可以参照这个例子来进行配置shade插件：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"> <span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-shade-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.1.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">          <span class="comment">&lt;!-- shade执行的生命周期阶段 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">executions</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">execution</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">phase</span>&gt;</span>package<span class="tag">&lt;/<span class="name">phase</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">goals</span>&gt;</span></span><br><span class="line">              <span class="tag">&lt;<span class="name">goal</span>&gt;</span>shade<span class="tag">&lt;/<span class="name">goal</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">goals</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">              <span class="tag">&lt;<span class="name">transformers</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">transformer</span> <span class="attr">implementation</span>=<span class="string">"org.apache.maven.plugins.shade.resource.ManifestResourceTransformer"</span>&gt;</span></span><br><span class="line">                  <span class="tag">&lt;<span class="name">manifestEntries</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">Main-Class</span>&gt;</span>$&#123;app.main.class&#125;<span class="tag">&lt;/<span class="name">Main-Class</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">X-Compile-Source-JDK</span>&gt;</span>$&#123;maven.compile.source&#125;<span class="tag">&lt;/<span class="name">X-Compile-Source-JDK</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">X-Compile-Target-JDK</span>&gt;</span>$&#123;maven.compile.target&#125;<span class="tag">&lt;/<span class="name">X-Compile-Target-JDK</span>&gt;</span></span><br><span class="line">                  <span class="tag">&lt;/<span class="name">manifestEntries</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">transformer</span>&gt;</span></span><br><span class="line">              <span class="tag">&lt;/<span class="name">transformers</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">execution</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">executions</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>将 <code>xml</code> 文件中的 <code>${app.main.class}</code> 和 <code>${maven.compile.source}</code> 分别改为项目中 <code>main</code> 函数所在的类的全路径和你所使用的 <code>JDK</code> 版本，这样就告诉了 <code>shade</code> 该项目的入口(<code>entries</code>)位置。配置完成后打包项目。我们执行包含第三方 <code>jar</code> 包的可执行 <code>jar</code> 包，如下格式：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 执行 jar 文件</span></span><br><span class="line">$ java [-options] -jar jarfile [args...]</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ java -jar firstdemo-1.0-SNAPSHOT.jar</span><br><span class="line"><span class="comment"># jar 文件执行结果</span></span><br><span class="line">这里是项目的入口...</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="Maven仓库网址：https-mvnrepository-com"><a href="#Maven仓库网址：https-mvnrepository-com" class="headerlink" title="Maven仓库网址：https://mvnrepository.com"></a>Maven仓库网址：<a href="https://mvnrepository.com" target="_blank" rel="noopener">https://mvnrepository.com</a></h3><h3 id="Maven官网：https-maven-apache-org"><a href="#Maven官网：https-maven-apache-org" class="headerlink" title="Maven官网：https://maven.apache.org"></a>Maven官网：<a href="http://maven.apache.org" target="_blank" rel="noopener">https://maven.apache.org</a></h3>
+    
+  </div>
+
+</article>
+
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持Sortinn</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2018/09/09/MySQL基本概念和操作/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2018/09/16/ArrayList小结/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/archives/" rel="noopener noreferrer" target="_self">
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/category/" rel="noopener noreferrer" target="_self">
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/tag/" rel="noopener noreferrer" target="_self">
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/link/" rel="noopener noreferrer" target="_self">
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/about/" rel="noopener noreferrer" target="_self">
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/search/" rel="noopener noreferrer" target="_self">
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '277317290454635afa73',
+  clientSecret: '78223c859304da5e8d71bfce136d436c6ff95c37',
+  repo: 'blog-comment',
+  owner: 'forsigner',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: location.pathname,
+  admin: ['forsigner'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>数组知多少 | Gran Turismo</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Data Structure,">
+  
+
+  <meta name="description" content="数组是怎么实现随机访问的？数组的专业定义：  数组（Array）是一种线性表数据结构。它用一组连续的内存空间，来存储一组具有相同类型的数据。  有几个地方需要注意：  线性表（Linear List）  顾名思义，线性表就是数据排成像线一样的结构。每个线性表上的数据最多只有前和后两个方向。除了数组，链表（Linked List）、栈（Stack）、队列（Queue）等也都是线性表结构。 与线性表相">
+<meta name="keywords" content="Data Structure">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数组知多少">
+<meta property="og:url" content="http://yoursite.com/2019/01/19/数组知多少/index.html">
+<meta property="og:site_name" content="Gran Turismo">
+<meta property="og:description" content="数组是怎么实现随机访问的？数组的专业定义：  数组（Array）是一种线性表数据结构。它用一组连续的内存空间，来存储一组具有相同类型的数据。  有几个地方需要注意：  线性表（Linear List）  顾名思义，线性表就是数据排成像线一样的结构。每个线性表上的数据最多只有前和后两个方向。除了数组，链表（Linked List）、栈（Stack）、队列（Queue）等也都是线性表结构。 与线性表相">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/images/数组删除操作.jpg">
+<meta property="og:updated_time" content="2019-01-19T12:40:13.415Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="数组知多少">
+<meta name="twitter:description" content="数组是怎么实现随机访问的？数组的专业定义：  数组（Array）是一种线性表数据结构。它用一组连续的内存空间，来存储一组具有相同类型的数据。  有几个地方需要注意：  线性表（Linear List）  顾名思义，线性表就是数据排成像线一样的结构。每个线性表上的数据最多只有前和后两个方向。除了数组，链表（Linked List）、栈（Stack）、队列（Queue）等也都是线性表结构。 与线性表相">
+<meta name="twitter:image" content="http://yoursite.com/images/数组删除操作.jpg">
+
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbeddx" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-38189205-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?57e94d016e201fba3603a8a2b0263af0";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+
+
+
+  
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+</head>
+</html>
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">盒子</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">盒子</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/archives/" rel="noopener noreferrer" target="_self">
+            博客
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/category/" rel="noopener noreferrer" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/tag/" rel="noopener noreferrer" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/link/" rel="noopener noreferrer" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/about/" rel="noopener noreferrer" target="_self">
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a class="CIRCLE" href="/search/" rel="noopener noreferrer" target="_self">
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#数组是怎么实现随机访问的？"><span class="toc-text">数组是怎么实现随机访问的？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#低效的“插入”和“删除”"><span class="toc-text">低效的“插入”和“删除”</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#警惕数组的越界访问问题"><span class="toc-text">警惕数组的越界访问问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#容器能否完全代替数组？"><span class="toc-text">容器能否完全代替数组？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二维数组内存寻址"><span class="toc-text">二维数组内存寻址</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#对于示例中无限循环的底层解释"><span class="toc-text">对于示例中无限循环的底层解释</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-数组知多少" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">数组知多少</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2019.01.19</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>Sortinn</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/CS-Learning/">CS Learning</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h2 id="数组是怎么实现随机访问的？"><a href="#数组是怎么实现随机访问的？" class="headerlink" title="数组是怎么实现随机访问的？"></a>数组是怎么实现随机访问的？</h2><p>数组的专业定义：</p>
+<blockquote>
+<p>数组（Array）是一种线性表数据结构。它用一组连续的内存空间，来存储一组具有相同类型的数据。</p>
+</blockquote>
+<p>有几个地方需要注意：</p>
+<ol>
+<li>线性表（Linear List）</li>
+</ol>
+<p>顾名思义，<strong>线性表</strong>就是数据排成像线一样的结构。每个线性表上的数据最多只有前和后两个方向。除了数组，链表（Linked List）、栈（Stack）、队列（Queue）等也都是线性表结构。</p>
+<p>与线性表相对立的自然就是<strong>非线性表</strong>，如二叉树（Binary Tree）、堆（Heap）、图（Graph）等。在非线性表中，数据间并非简单的前后关系。</p>
+<a id="more"></a>
+<ol>
+<li>连续的内存空间和相同类型的数据</li>
+</ol>
+<p>数组的杀手锏级特性<strong>“随机访问”</strong>和这两个限制是分不开的。相反，这两个特点也同样“限制”了数组的很多操作，变得非常低效，比如从数组中<strong>删除数据</strong>或向数组中<strong>插入数据</strong>，为了保证数组本身的连续性，就不得不做大量的数据搬移工作。</p>
+<p>说道随机访问，它的原理是什么呢？</p>
+<p>我们拿一个长度为 10 的 int 类型的数组 int[] array = new int[10] 来举例。下图中，计算机给数组 array 分配了一块连续的内存空间 1000 ~ 1039，其中，内存块的首地址为 base_address = 1000。</p>
+<p>众所周知，计算机是通过地址来访问内存中的数据的。当计算机需要随机访问数组中的某个元素时，它会首先通过下面的寻址公式计算出该元素的内存地址：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">array[i]_address = base_address + i * data_type_size</span><br></pre></td></tr></table></figure>
+<p>其中 data_type_size 是数组中存储的该类型元素的大小。例如在 Java 中，int 类型的大小为 4 个字节，所以如果是 int 类型的数组，那么 data_type_size 就是 4 个字节。</p>
+<p>另外，常常有人对比数组和链表时会这样说：“链表适合插入、删除，时间复杂度为 O(1)；数组适合查找，查找的时间复杂度为 O(1)”。</p>
+<p>实际上，这种说法并不准确。数组的确适合查找操作，不过查找的时间复杂度并不是 O(1)。即便是排好序的数组，用二分查找这样高效的算法，它的查找时间复杂度也为 O(logn)。所以正确的表述应该是：</p>
+<blockquote>
+<p>数组支持随机访问，根据下标随机访问的时间复杂度为 O(1)。</p>
+</blockquote>
+<h2 id="低效的“插入”和“删除”"><a href="#低效的“插入”和“删除”" class="headerlink" title="低效的“插入”和“删除”"></a>低效的“插入”和“删除”</h2><p>前面提了一下，数组为了保持其内存的连续性，会导致插入和删除操作比较低效。为什么会低效？有什么改进方法吗？</p>
+<ol>
+<li>插入</li>
+</ol>
+<p>假定数组的长度为 n，现在我们要将一个数据插入到数组的第 k 个位置。为了把第 k 个位置腾出来给新来的数据，我们需要将第 k ~ n 这部分元素都顺序向后挪动一位。那么插入操作的时间复杂度为多少呢？下面分析一下：</p>
+<p>如果在数组末尾插入元素，那么直接写入就好，不需要挪动元素，此时的时间复杂度为 O(1)。</p>
+<p>如果在数组开头插入元素，那么需要将数组中所有的数据都向后挪动一位，这是最坏的情况，时间复杂度为O(n)。</p>
+<p>因为我们在每个位置插入元素的概率都是一样的，所以平均情况的时间复杂度为</p>
+<p>O((1 + 2 + 3 + … + n) / n)= <strong>O(n)</strong>。</p>
+<p>也就是说在数组中插入一个元素的时间复杂度为O(n)。</p>
+<p>如果数组是有序的，我们在某个位置插入一个新的元素时，就要按照上面分析的方法挪动 k 之后的数据。但是如果数组是无序的，或者说数组中元素的排列是没有规律的，数组只是被当作一个存储数据的集合。在这种情况下，如果要将某个数据插入到第 k 个位置，为了避免大规模的数据移动，我们有一个简单的方法就是，直接将第 k 位的数据搬移到数组的最后一位，把新的元素直接放入第 k 位即可。</p>
+<p>利用这种处理技巧，在特定情境下，在数组的特定位置插入元素的时间复杂度就降为 <strong>O(1)</strong>。</p>
+<ol>
+<li>删除</li>
+</ol>
+<p>与插入数据类似，如果我们要删除第 k 个位置的数据，为了保证连续性，我们需要将第 k 个位置之后的元素全部给前面挪动一位。</p>
+<p>如果删除数组末尾的数据，则最好情况的时间复杂度为 O(1)；如果删除开头的数据，则最坏情况的时间复杂度为 O(n)；平均时间复杂度也为 O(n)。</p>
+<p>实际上，在某些特殊场景下，我们并不一定非得追求数组中数据的连续性。如果我们将多次删除操作集中在一起执行，删除的效率是不是会高很多呢？</p>
+<p>举个例子。数组 array[10] 中存储了 8 个元素：a, b, c, d, e, f, g, h。现在我们要一次删除 a, b, c 这三个元素。</p>
+<p><img src="/images/数组删除操作.jpg" alt="数组删除操作"></p>
+<p>为了避免 d, e, f, g, h 这几个数据被搬移三次，我们可以先记录下已经删除的数据。每次删除操作并不是真正地搬移数据，只是记录数据已经被删除。当数组没有更多空间存储新的数据时，我们再触发执行一次真正的删除操作，这样就大大减少了删除操作导致的数据搬移。（这也是 JVM 标记清除垃圾回收算法的核心思想）</p>
+<h2 id="警惕数组的越界访问问题"><a href="#警惕数组的越界访问问题" class="headerlink" title="警惕数组的越界访问问题"></a>警惕数组的越界访问问题</h2><p>分析一下下面这段 C 语言代码的运行结果：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>* argv[])</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> arr[<span class="number">3</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="keyword">for</span>(; i &lt;= <span class="number">3</span>; i++)&#123;</span><br><span class="line">        arr[i] = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"hello world\n"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>发现问题了吗？这段代码的运行结果并非打印三行“hello world”，而是会无限打印“hello world”。为什么呢？</p>
+<p>因为数组的大小是 3，而代码中因为书写错误导致 for 循环的终止条件写为了 i &lt;= 3 而非 i &lt; 3。所以当 i = 3 时，数组 arr[3] 访问越界。在 C 语言中，arr[3] 这个地址正好是存储变量 i 的内存地址，因此执行到 arr[3] = 0 时也就相当于 i = 0，所以就会导致这个循环无法停止，继而无限打印“hello world”。</p>
+<p>数组越界在 C 语言中是一种未决行为，并没有规定数组访问越界时编译器应该怎么处理。因为访问数组的本质就是访问一段连续内存，只要数组通过偏移公式计算得到的内存地址是可用的，那么程序可能就不会报任何错误。</p>
+<p>其实很多病毒也正是利用了代码中的数组越界可能访问非法地址的漏洞，来攻击系统，所以一定要警惕数组越界。</p>
+<h2 id="容器能否完全代替数组？"><a href="#容器能否完全代替数组？" class="headerlink" title="容器能否完全代替数组？"></a>容器能否完全代替数组？</h2><p>用 Java 举例，Java 中的 ArrayList 的使用频度非常高。那么它与数组相比有什么优势呢？</p>
+<ol>
+<li>将很多数组操作的细节封装</li>
+<li>支持动态扩容</li>
+</ol>
+<p>每次使用 ArrayList，我们完全不用关心底层的扩容逻辑，ArrayList 已经帮我们实现好了。每次存储空间不够时，它都会自动将空间扩容为之前容量的 1.5 大小。不过，ArrayList 的扩容操作非常耗时，涉及到内存申请和数据搬移，因此，如果能事先确定需要存储的数据大小，<strong>最好在创建 ArrayList 的时候指定其大小</strong>。</p>
+<p>比如我们要从数据库中取出 10000 条数据放入 ArrayList 中。如果我们事先指定了 ArrayList 的大小，那么可以省掉很多次内存申请和数据搬移的操作。因为 ArrayList 的默认大小是 10。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ArrayList&lt;User&gt; users = <span class="keyword">new</span> ArrayList(<span class="number">10000</span>);</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10000</span>; ++i) &#123;</span><br><span class="line">  users.add(xxx);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>作为高级语言编程者，那数组是不是就无用武之地了呢？并非如此。</p>
+<ol>
+<li>ArrayList 无法存储基本数据类型，如 int, double 等，需要装箱为 Integer, Double 类才可以存储。而自动装箱（Autoboxing）和自动拆箱（Unboxing）则有一定的性能消耗，所以如果特别关注性能，或者希望使用基本数据类型，那么就可以选用数组。</li>
+<li>如果数组的大小事先已知，并且对数据的操作很简单，不需要用 ArrayList 的大部分方法，就可以直接使用数组。</li>
+<li>还有当表示多维数组时，用数组往往会更加直观。如 <code>int[][] array</code>；而使用容器则要这样定义：<code>ArrayList&lt;ArrayList&lt;Integer&gt;&gt; array</code>。</li>
+</ol>
+<h2 id="二维数组内存寻址"><a href="#二维数组内存寻址" class="headerlink" title="二维数组内存寻址"></a>二维数组内存寻址</h2><p>对于 m * n 的数组，<code>a[i][j]</code> (i &lt; m, j &lt; n)的地址为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">address = base_address + ( i * n + j) * type_size</span><br></pre></td></tr></table></figure>
+<h2 id="对于示例中无限循环的底层解释"><a href="#对于示例中无限循环的底层解释" class="headerlink" title="对于示例中无限循环的底层解释"></a>对于示例中无限循环的底层解释</h2><p>函数体内的局部变量存在栈上，且是连续压栈。在Linux进程的内存布局中，栈区在高地址空间，从高向低增长，也就是说，栈是向下增长的。</p>
+<p>变量 i 和 arr 在相邻地址，且 i 比 arr 的地址大，所以 arr 越界正好访问到 i。当然，前提是 i 和 arr 元素同类型，否则那段代码仍是未决行为。</p>
+
+    
+  </div>
+
+</article>
+
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持Sortinn</div>
+        <ul>
+        
+          <li class="item">
+            
+              <span>微信扫一扫</span>
+            
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            
+              <span>支付宝扫一扫</span>
+            
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2019/01/19/Hip-Hop力量/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2019/01/19/每日工作/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/archives/" rel="noopener noreferrer" target="_self">
+              博客
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/category/" rel="noopener noreferrer" target="_self">
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/tag/" rel="noopener noreferrer" target="_self">
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/link/" rel="noopener noreferrer" target="_self">
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/about/" rel="noopener noreferrer" target="_self">
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a class="CIRCLE" href="/search/" rel="noopener noreferrer" target="_self">
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+    
+    
+
+    
+
+    
+    
+
+    
+
+<!-- Gitalk评论插件通用代码 -->
+<div id="gitalk-container"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script>
+const gitalk = new Gitalk({
+  clientID: '277317290454635afa73',
+  clientSecret: '78223c859304da5e8d71bfce136d436c6ff95c37',
+  repo: 'blog-comment',
+  owner: 'forsigner',
+  // 在这里设置一下截取前50个字符串, 这是因为 github 对 label 的长度有了要求, 如果超过
+  // 50个字符串则会报错.
+  // id: location.pathname.split('/').pop().substring(0, 49),
+  id: location.pathname,
+  admin: ['forsigner'],
+  // facebook-like distraction free mode
+  distractionFreeMode: false
+})
+gitalk.render('gitalk-container')
+</script>
+<!-- Gitalk代码结束 -->
+
+
+
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+</body>
+</html>
